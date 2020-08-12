@@ -37,15 +37,15 @@ config = ConfigParser()
 config.read(ini_file)
 
 try:
-	deezer_token = config['login']['token']
-	bot_token = config['bot']['token']
-	acrcloud_key = config['acrcloud']['key']
-	acrcloud_hash = config['acrcloud']['secret']
-	acrcloud_host = config['acrcloud']['host']
-	version = config['bot_info']['version']
-	creator = config['bot_info']['creator']
-	donation_link = config['bot_info']['donation']
-	group_link = config['bot_info']['group']
+	deezer_token = os.getenv('DEEZER_TOKEN', '')
+	bot_token = os.getenv('TELEGRAM_BOT_TOKEN', '')
+	acrcloud_key = os.getenv('ACRCLOUD_KEY', '')
+	acrcloud_hash = os.getenv('ACRCLOUD_SECRET', '')
+	acrcloud_host = os.getenv('ACRCLOUD_HOST, '')
+	version = os.getenv('BOT_VERSION', '')
+	creator = os.getenv('BOT_CREATOR', '')
+	donation_link = os.getenv('DONATION_LINK, '')
+	group_link = os.getenv('GROUP_LINK', '')
 except KeyError:
 	print("Something went wrong with configuration file")
 	exit()
