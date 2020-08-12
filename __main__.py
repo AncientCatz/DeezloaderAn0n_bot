@@ -7,5 +7,5 @@ except Exception:
     pass
 # end try
 
-import dwsongs-normal as start
+import dwsongs_normal as start
 start()
