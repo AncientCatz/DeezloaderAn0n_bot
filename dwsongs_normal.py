@@ -44,7 +44,7 @@ try:
 	acrcloud_host = os.getenv('ACRCLOUD_HOST', '')
 	version = os.getenv('BOT_VERSION', '')
 	creator = os.getenv('BOT_CREATOR', '')
-	donation_link = os.getenv('DONATION_LINK, '')
+	donation_link = os.getenv('DONATION_LINK', '')
 	group_link = os.getenv('GROUP_LINK', '')
 except KeyError:
 	print("Something went wrong with configuration file")
