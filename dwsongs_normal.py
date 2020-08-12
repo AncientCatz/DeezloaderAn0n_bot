@@ -41,7 +41,7 @@ try:
 	bot_token = os.getenv('TELEGRAM_BOT_TOKEN', '')
 	acrcloud_key = os.getenv('ACRCLOUD_KEY', '')
 	acrcloud_hash = os.getenv('ACRCLOUD_SECRET', '')
-	acrcloud_host = os.getenv('ACRCLOUD_HOST, '')
+	acrcloud_host = os.getenv('ACRCLOUD_HOST', '')
 	version = os.getenv('BOT_VERSION', '')
 	creator = os.getenv('BOT_CREATOR', '')
 	donation_link = os.getenv('DONATION_LINK, '')
