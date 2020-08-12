@@ -99,13 +99,13 @@ def reque(url, chat_id = None, control = False):
 
 	return thing
 
-def init_user(chat_id, tongue):
+def init_user(chat_id, bot_language):
 	try:
 		users[chat_id]
 	except KeyError:
 		users[chat_id] = {
 			"quality": "MP3_320",
-			"tongue": tongue,
+			"bot_language": bot_language,
 			"c_downloads": 0
 		}
 
@@ -196,9 +196,9 @@ def sendMessage(chat_id, text, reply_markup = None, reply_to_message_id = None):
 	sleep(default_time)
 
 	try:
-		users[chat_id]['tongue']
+		users[chat_id]['bot_language']
 	except KeyError:
-		users[chat_id]['tongue'] = "en"
+		users[chat_id]['bot_language'] = "en"
 
 	try:
 		bot.sendChatAction(chat_id, "typing")
@@ -206,7 +206,7 @@ def sendMessage(chat_id, text, reply_markup = None, reply_to_message_id = None):
 		return bot.sendMessage(
 			chat_id,
 			translate(
-				users[chat_id]['tongue'], text
+				users[chat_id]['bot_language'], text
 			),
 			reply_markup = reply_markup,
 			reply_to_message_id = reply_to_message_id
@@ -879,7 +879,7 @@ def Audio(audio, chat_id):
 
 				image = url['album']['cover_xl']
 			except KeyError:
-				sendMessage(chat_id, "Sorry I can't Shazam the track :(")
+				sendMessage(chat_id, "Sorry I can't detect the track :(")
 				return
 
 	keyboard = [
@@ -901,17 +901,17 @@ def Audio(audio, chat_id):
 		reply_markup = InlineKeyboardMarkup(keyboard)
 	)
 
-def inline(message_id, chat_id, query_data, query_id, tongue):
+def inline(message_id, chat_id, query_data, query_id, bot_language):
 	try:
 		if query_data in settingss or query_data in qualities:
 			if query_data == "quality":
 				keyboard = qualities_keyboard
 
-			elif query_data == "tongue":
-				if users[chat_id]['tongue'] != "en":
-					users[chat_id]['tongue'] = "en"
+			elif query_data == "bot_language":
+				if users[chat_id]['bot_language'] != "en":
+					users[chat_id]['bot_language'] = "en"
 				else:
-					users[chat_id]['tongue'] = tongue
+					users[chat_id]['bot_language'] = bot_language
 
 				keyboard = create_keyboard(settingss, chat_id)
 
@@ -930,7 +930,7 @@ def inline(message_id, chat_id, query_data, query_id, tongue):
 			bot.answerCallbackQuery(
 				query_id,
 				translate(
-					users[chat_id]['tongue'], "DONE ✅"
+					users[chat_id]['bot_language'], "DONE ✅"
 				)
 			)
 
@@ -971,7 +971,7 @@ def inline(message_id, chat_id, query_data, query_id, tongue):
 						bot.answerCallbackQuery(
 							query_id,
 							translate(
-								users[chat_id]['tongue'],
+								users[chat_id]['bot_language'],
 								"Wait the end and repeat the step, did you think you could download how much songs you wanted? ;)"
 							),
 							show_alert = True
@@ -984,7 +984,7 @@ def inline(message_id, chat_id, query_data, query_id, tongue):
 				bot.answerCallbackQuery(
 					query_id,
 					translate(
-						users[chat_id]['tongue'], "Songs are downloading ⬇️"
+						users[chat_id]['bot_language'], "Songs are downloading ⬇️"
 					)
 				)
 
@@ -1108,7 +1108,7 @@ def inline(message_id, chat_id, query_data, query_id, tongue):
 				bot.answerCallbackQuery(
 					query_id,
 					translate(
-						users[chat_id]['tongue'], query_data
+						users[chat_id]['bot_language'], query_data
 					)
 				)
 
@@ -1133,7 +1133,7 @@ def inline(message_id, chat_id, query_data, query_id, tongue):
 						bot.answerCallbackQuery(
 							query_id,
 							translate(
-								users[chat_id]['tongue'], "Wait the end and repeat the step, did you think you could download how much songs you wanted? ;)"
+								users[chat_id]['bot_language'], "Wait the end and repeat the step, did you think you could download how much songs you wanted? ;)"
 							),
 							show_alert = True
 						)
@@ -1145,7 +1145,7 @@ def inline(message_id, chat_id, query_data, query_id, tongue):
 				bot.answerCallbackQuery(
 					query_id,
 					translate(
-						users[chat_id]['tongue'], "Song is downloading"
+						users[chat_id]['bot_language'], "Song is downloading"
 					)
 				)
 
@@ -1168,17 +1168,17 @@ def download(update, context):
 		return
 
 	try:
-		tongue = infos_user.language_code
+		bot_language = infos_user.language_code
 	except AttributeError:
-		tongue = "en"
+		bot_language = "en"
 
-	init_user(chat_id, tongue)
+	init_user(chat_id, bot_language)
 
 	Thread(
 		target = inline,
 		args = (
 			message_id, chat_id,
-			query_data, query_id, tongue
+			query_data, query_id, bot_language
 		)
 	).start()
 
@@ -1193,11 +1193,11 @@ def search(update, context):
 		return
 
 	try:
-		tongue = infos_user.language_code
+		bot_language = infos_user.language_code
 	except AttributeError:
-		tongue = "en"
+		bot_language = "en"
 
-	init_user(chat_id, tongue)
+	init_user(chat_id, bot_language)
 
 	if ".chart." == query_string:
 		search1 = request(api_chart).json()
@@ -1422,11 +1422,11 @@ def menu(update, context):
 		return
 
 	try:
-		tongue = infos_user.language_code
+		bot_language = infos_user.language_code
 	except AttributeError:
-		tongue = "en"
+		bot_language = "en"
 
-	init_user(chat_id, tongue)
+	init_user(chat_id, bot_language)
 
 	if text == "/start":
 		sendPhoto(
@@ -1453,7 +1453,7 @@ def menu(update, context):
 				InlineKeyboardButton(
 						queries['s_lbl']['text'],
 						switch_inline_query_current_chat = queries['s_lbl']['query'] % ""
-					)
+				)
 			],
 			[
 				InlineKeyboardButton(
@@ -1495,7 +1495,7 @@ def menu(update, context):
 			)
 		)
 
-	elif text == "/shazam":
+	elif text == "/detect":
 		sendMessage(chat_id, "Send the audio or voice message to identify the song")
 
 	elif text == "/help":
