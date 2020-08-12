@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+import os
 from time import sleep
 from requests import get
 from os import path, makedirs
@@ -20,7 +21,7 @@ config = ConfigParser()
 config.read(ini_file)
 
 try:
-	ya_key = config['yandex']['key']
+	ya_key = os.getenv('YANDEX_KEY', '')
 except KeyError:
 	print("Something went wrong with configuration file")
 	exit()
