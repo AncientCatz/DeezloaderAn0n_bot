@@ -1578,7 +1578,7 @@ def menu(update, context):
 				).start()
 
 try:
-  print("Mode list:")
+	print("Mode list:")
 	print("1): Free")
 	print("2): Strict")
 	print("+---------+")
