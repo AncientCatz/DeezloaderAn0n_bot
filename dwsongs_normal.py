@@ -1578,9 +1578,15 @@ def menu(update, context):
 				).start()
 
 try:
+  print("Mode list:")
 	print("1): Free")
 	print("2): Strict")
-	ans = input("Choose: ")
+	print("+---------+")
+	ans = os.getenv('MODE', '')
+	if ans == "1":
+	  print("Active mode: Free")
+	if ans == "2":
+	  print("Active mode: Strict")
 
 	if ans == "1" or ans == "2":
 		for a in comandss:
